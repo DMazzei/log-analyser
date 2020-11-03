@@ -9,6 +9,7 @@ jobs:
     executor: ruby/default
     steps:
       - checkout
+      - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: Which bundler?
           command: bundle -v
