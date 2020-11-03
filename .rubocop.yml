@@ -1,0 +1,56 @@
+AllCops:
+  Exclude:
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'vendor/bundle/**/*'
+    - 'bin/**/*'
+    - 'log/**/*'
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  ExtraDetails: true
+  UseCache: true
+  NewCops: enable
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Style/TrailingUnderscoreVariable:
+  Enabled: false
+
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: table
+
+Style/RegexpLiteral:
+  AllowInnerSlashes: true
+
+Style/KeywordParametersOrder:
+  Enabled: false
+
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+    - 'spec/**/*'
+
+Style/SoleNestedConditional:
+  Enabled: false
