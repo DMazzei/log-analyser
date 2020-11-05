@@ -32,6 +32,7 @@ Metrics/ClassLength:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+    - 'Guardfile'
 
 Style/Documentation:
   Enabled: false
@@ -54,3 +55,8 @@ Lint/ConstantDefinitionInBlock:
 
 Style/SoleNestedConditional:
   Enabled: false
+
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'lib/display_output.rb'
