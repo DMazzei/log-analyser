@@ -3,6 +3,7 @@ Gemfile
 Gemfile.lock
 Guardfile
 LICENSE.txt
+Manifest
 README.md
 Rakefile
 bin/console
@@ -14,7 +15,7 @@ lib/pageviews.rb
 lib/pageviews_log_aggregator.rb
 lib/parser.rb
 lib/unique_pageviews.rb
-log-analyzer.gemspec
+log-analyser.gemspec
 spec/bin/display_output_spec.rb
 spec/lib/pageview_log_aggregator_spec.rb
 spec/lib/pageviews_spec.rb
@@ -2820,4 +2821,3 @@ vendor/bundle/ruby/2.7.0/specifications/thor-1.0.1.gemspec
 vendor/bundle/ruby/2.7.0/specifications/unicode-display_width-1.7.0.gemspec
 vendor/bundle/ruby/2.7.0/specifications/wwtd-1.4.1.gemspec
 version.rb
-Manifest

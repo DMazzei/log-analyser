@@ -2,10 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'require_all'
-gem 'rake', '~> 12.0'
 gem 'bundler'
-gem 'echoe'
+gem 'rake', '~> 12.0'
+gem 'require_all'
 
 group :development do
   gem 'guard'
