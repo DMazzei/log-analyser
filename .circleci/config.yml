@@ -70,6 +70,33 @@ jobs:
       - coveralls/upload:
           path_to_lcov: ./coverage/lcov/log-analyser.lcov
 
+  feature-branch-gem:
+      <<: *defaults
+      steps:
+        - checkout
+        - run:
+            name: Install gem-versioner gem
+            command: gem install gem-versioner
+        - run:
+            name: Build gem
+            command: PRE_RELEASE=$CIRCLE_BRANCH gem build "$CIRCLE_PROJECT_REPONAME".gemspec
+        - run:
+            name: Push pre-release gem
+            command: |
+              package=$(ls -t1 ${CIRCLE_PROJECT_REPONAME}*.gem | head -1)
+              gem push $package
+
+  tagged-gem:
+      <<: *defaults
+      steps:
+        - checkout
+        - run:
+            name: Build gem
+            command: bundle exec rake build
+        - run:
+            name: Publish gem
+            command: gsbundle exec rake release
+
 workflows:
   version: 2
   build_and_test:
@@ -81,3 +108,21 @@ workflows:
       - rspec:
           requires:
             - build
+      - feature-branch-gem:
+          filters:
+            branches:
+              ignore: master
+            tags:
+              ignore: /.*/
+          requires:
+            - rspec
+            - rubocop
+      - tagged-gem:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
+          requires:
+            - rspec
+            - rubocop

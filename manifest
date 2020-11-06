@@ -1,0 +1,12 @@
+CHANGELOG
+Gemfile
+LICENSE.txt
+Manifest
+README.md
+Rakefile
+lib/pageviews.rb
+lib/pageviews_log_aggregator.rb
+lib/parser.rb
+lib/unique_pageviews.rb
+log-analyser.gemspec
+version.rb
