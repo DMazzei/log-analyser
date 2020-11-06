@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require './bin/display_output'
 
 RSpec.describe DisplayOutput do
   let(:text) { 'just testing' }

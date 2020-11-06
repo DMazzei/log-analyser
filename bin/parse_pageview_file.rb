@@ -2,6 +2,7 @@
 
 require 'optparse'
 require_relative '../config/environment'
+require_relative 'display_output'
 
 options = {
     file: nil,
