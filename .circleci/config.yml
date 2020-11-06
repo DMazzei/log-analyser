@@ -1,16 +1,15 @@
 version: 2.1
 orbs:
-  ruby: circleci/ruby@0.1.2
-  coveralls: coveralls/coveralls@1.0.4
+  ruby: circleci/ruby@1.0
+  coveralls: coveralls/coveralls@1.0.5
 
 defaults: &defaults
   working_directory: ~/log-analyser
   docker:
-    - image: circleci/ruby:2.7.1
+    - image: cimg/ruby:2.7-node
   executor: ruby/default
 
 restore_gems: &restore_gems
-  # Download and cache dependencies
   restore_cache:
     keys:
       - gems-{{ checksum "log-analyser.gemspec" }}-{{ checksum ".travis.yml"}}
@@ -25,9 +24,7 @@ jobs:
       - run:
           shell: /bin/bash -l
           command: |
-            rvm use 2.7 --default
             bundle check || bundle install
-            bundle exec wwtd --only-bundle
       - save_cache:
           key: gems-{{ checksum "log-analyser.gemspec" }}-{{ checksum ".travis.yml"}}
           paths:
@@ -44,7 +41,6 @@ jobs:
               echo $gemspec_changes
               exit 1
             fi
-
   rubocop:
     <<: *defaults
     steps:
@@ -54,7 +50,7 @@ jobs:
           keys:
             - rubocop-v2-parallel-{{ .Branch }}
             - rubocop-v2-parallel-
-      - ruby/bundle-install
+      - run: bundle install
       - run:
           name: run Rubocop
           command: bundle exec rubocop --parallel
@@ -62,18 +58,17 @@ jobs:
           key: rubocop-v2-parallel-{{ .Branch }}-{{ .BuildNum }}
           paths:
             - tmp/rubocop_cache
-
   rspec:
     <<: *defaults
     steps:
       - checkout
       - *restore_gems
-      - ruby/bundle-install
+      - run: bundle install
       - run:
           name: run tests
           command: bundle exec rspec
       - coveralls/upload:
-          path_to_lcov: ./coverage/lcov/project.lcov
+          path_to_lcov: ./coverage/lcov/log-analyser.lcov
 
 workflows:
   version: 2
