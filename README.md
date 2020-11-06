@@ -1,4 +1,4 @@
-
+[![Coverage Status](https://coveralls.io/repos/github/DMazzei/log-analyser/badge.svg?branch=master)](https://coveralls.io/github/DMazzei/log-analyser?branch=master)
 
 
 

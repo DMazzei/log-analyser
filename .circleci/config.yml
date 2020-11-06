@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@0.1.2
+  coveralls: coveralls/coveralls@1.0.4
 
 defaults: &defaults
   working_directory: ~/log-analyser
@@ -8,15 +9,19 @@ defaults: &defaults
     - image: circleci/ruby:2.7.1
   executor: ruby/default
 
+restore_gems: &restore_gems
+  # Download and cache dependencies
+  restore_cache:
+    keys:
+      - gems-{{ checksum "log-analyser.gemspec" }}-{{ checksum ".travis.yml"}}
+      - gems
+
 jobs:
   build:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-        keys:
-          - gems-{{ checksum "log-analyser.gemspec" }}-{{ checksum ".travis.yml"}}
-          - gems
+      - *restore_gems
       - run:
           shell: /bin/bash -l
           command: |
@@ -31,39 +36,24 @@ jobs:
           name: Validate that gemspec is up-to-date
           shell: /bin/bash -l
           command: |
-            # Running it twice, as a single run does not feed manifest changes into the gemspec
             bundle exec rake build
-            bundle exec rake build
-            export gemspec_changes="$(git diff -- ruby-utilities.gemspec | egrep '(s\.version|s\.files)')"
+            export gemspec_changes="$(git diff -- log-analyser.gemspec | egrep '(s\.version|s\.files)')"
             if [ "$gemspec_changes" != "" ]; then
               echo "'bundle exec rake build' caused gemspec changes"
               echo "Please run the command locally and commit the changes."
               echo $gemspec_changes
               exit 1
             fi
-      - run:
-          name: Download test reporter
-          shell: /bin/bash -l
-          command: |
-            curl -Lo ./cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-            chmod +x ./cc-test-reporter
-      - run:
-          name: Run tests and report to code climate
-          shell: /bin/bash -l
-          command: |
-            ./cc-test-reporter before-build
-            bundle exec wwtd
-            ./cc-test-reporter after-build -t simplecov --exit-code $?
-      - store_artifacts:
-          path: ./coverage
 
   rubocop:
     <<: *defaults
     steps:
       - checkout
-      - run:
-          name: Which bundler?
-          command: bundle -v
+      - *restore_gems
+      - restore_cache:
+          keys:
+            - rubocop-v2-parallel-{{ .Branch }}
+            - rubocop-v2-parallel-
       - ruby/bundle-install
       - run:
           name: run Rubocop
@@ -77,25 +67,22 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run:
-          name: Which bundler?
-          command: bundle -v
+      - *restore_gems
       - ruby/bundle-install
-
-      # run tests!
       - run:
           name: run tests
-          command: |
-            mkdir /tmp/test-results
-            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+          command: bundle exec rspec
+      - coveralls/upload:
+          path_to_lcov: ./coverage/lcov/project.lcov
 
-            bundle exec rspec --format progress \
-                            --out /tmp/test-results/rspec.xml \
-                            --format progress \
-                            $TEST_FILES
-      # collect reports
-      - store_test_results:
-          path: /tmp/test-results
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: test-results
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - rubocop:
+          requires:
+            - build
+      - rspec:
+          requires:
+            - build

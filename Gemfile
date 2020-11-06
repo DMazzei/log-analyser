@@ -20,6 +20,9 @@ group :development, :test do
   gem 'rspec', '~> 3.8'
   gem 'rubocop', require: false
   gem 'simplecov', require: false
+  gem 'coveralls', require: false
+  gem 'rspec_junit_formatter'
+  gem 'simplecov-lcov'
 end
 
 gemspec name: 'log-analyser'
