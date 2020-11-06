@@ -5,6 +5,8 @@ AllCops:
     - 'vendor/bundle/**/*'
     - 'bin/**/*'
     - 'log/**/*'
+    - 'coverage/**/*'
+    - 'log-analyser.gemspec'
   DisplayCopNames: true
   DisplayStyleGuide: true
   ExtraDetails: true

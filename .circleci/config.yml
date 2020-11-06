@@ -1,16 +1,88 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@0.1.2
+  coveralls: coveralls/coveralls@1.0.4
+
+defaults: &defaults
+  working_directory: ~/log-analyser
+  docker:
+    - image: circleci/ruby:2.7.1
+  executor: ruby/default
+
+restore_gems: &restore_gems
+  # Download and cache dependencies
+  restore_cache:
+    keys:
+      - gems-{{ checksum "log-analyser.gemspec" }}-{{ checksum ".travis.yml"}}
+      - gems
 
 jobs:
   build:
-    docker:
-      - image: circleci/ruby:2.7.1
-    executor: ruby/default
+    <<: *defaults
     steps:
       - checkout
+      - *restore_gems
       - run:
-          name: Which bundler?
-          command: bundle -v
-      - ruby/bundle-install
+          shell: /bin/bash -l
+          command: |
+            rvm use 2.7 --default
+            bundle check || bundle install
+            bundle exec wwtd --only-bundle
+      - save_cache:
+          key: gems-{{ checksum "log-analyser.gemspec" }}-{{ checksum ".travis.yml"}}
+          paths:
+            - /usr/local/rvm/gems
+      - run:
+          name: Validate that gemspec is up-to-date
+          shell: /bin/bash -l
+          command: |
+            bundle exec rake build
+            export gemspec_changes="$(git diff -- log-analyser.gemspec | egrep '(s\.version|s\.files)')"
+            if [ "$gemspec_changes" != "" ]; then
+              echo "'bundle exec rake build' caused gemspec changes"
+              echo "Please run the command locally and commit the changes."
+              echo $gemspec_changes
+              exit 1
+            fi
 
+  rubocop:
+    <<: *defaults
+    steps:
+      - checkout
+      - *restore_gems
+      - restore_cache:
+          keys:
+            - rubocop-v2-parallel-{{ .Branch }}
+            - rubocop-v2-parallel-
+      - ruby/bundle-install
+      - run:
+          name: run Rubocop
+          command: bundle exec rubocop --parallel
+      - save_cache:
+          key: rubocop-v2-parallel-{{ .Branch }}-{{ .BuildNum }}
+          paths:
+            - tmp/rubocop_cache
+
+  rspec:
+    <<: *defaults
+    steps:
+      - checkout
+      - *restore_gems
+      - ruby/bundle-install
+      - run:
+          name: run tests
+          command: bundle exec rspec
+      - coveralls/upload:
+          path_to_lcov: ./coverage/lcov/project.lcov
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - rubocop:
+          requires:
+            - build
+      - rspec:
+          requires:
+            - build
