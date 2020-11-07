@@ -135,6 +135,8 @@ The _*master branch*_ merge process will trigger the deployment process on Circl
 
 The deployment process will build and tag a new gem version and push it to [rubygems.org](https://rubygems.org/gems/log-analyser).
 
+> In order to merge changes into _*master branch*_, the version must be bumped up, otherwise the deployment will fail.
+> The version must be updated in `version.rb`.
 
 ## Contributing
 
