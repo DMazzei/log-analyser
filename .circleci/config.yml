@@ -92,6 +92,8 @@ jobs:
       steps:
         - checkout
         - *restore_gems
+        - run: git config user.email danielmazzei@gmail.com
+        - run: git config user.name DMazzei
         - run:
             name: rubygems credentials
             command: |
