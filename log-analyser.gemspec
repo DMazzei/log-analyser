@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files         = %w(.ruby-version CHANGELOG Gemfile Gemfile.lock Guardfile LICENSE.txt Manifest README.md Rakefile bin/setup config/environment.rb lib/pageviews.rb lib/pageviews_log_aggregator.rb lib/parser.rb lib/unique_pageviews.rb log-analyser.gemspec version.rb)
+  spec.files         = %w(.ruby-version CHANGELOG Gemfile Gemfile.lock Guardfile LICENSE.txt README.md Rakefile bin/setup config/environment.rb lib/pageviews.rb lib/pageviews_log_aggregator.rb lib/parser.rb lib/unique_pageviews.rb log-analyser.gemspec version.rb)
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(/^exe\//) { |f| File.basename(f) }
   spec.require_paths = ['lib']
