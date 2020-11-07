@@ -128,9 +128,17 @@ Use `Bundle exec rake rspec` to run the tests.
 The test coverage is handled by `rspec`, `simplecov` and `coveralls`.
 Status and coverage history can be checked [here](https://coveralls.io/github/DMazzei/log-analyser). 
 
+#### Deployment
+
+After passing all checks and requirements on github, a *PR* can be merged after review and approval. 
+The _*master branch*_ merge process will trigger the deployment process on CircleCI.
+
+The deployment process will build and tag a new gem version and push it to [rubygems.org](https://rubygems.org/gems/log-analyser).
+
+
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/log-analyser.
+Bug reports and pull requests are welcome on GitHub at https://github.com/DMazzeig/log-analyser.
 
 ## Next Steps
 

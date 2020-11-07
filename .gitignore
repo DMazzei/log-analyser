@@ -17,6 +17,7 @@
 /storage/*
 !/storage/.keep
 
+*.lock
 *.gem
 *.rbc
 .rspec_status
