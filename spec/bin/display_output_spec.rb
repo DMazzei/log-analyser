@@ -33,9 +33,11 @@ RSpec.describe DisplayOutput do
     described_class.new.print_list([])
   end
 
+  let(:error_message) { 'error message' }
+  let(:expected_message) { "An error occurred:\n>> Type:    StandardError\n>> Message: #{error_message}" }
   it 'prints exception with error formatting' do
-    error = StandardError.new('message')
-    expect($stdout).to receive(:puts).with("An error occurred:\n>> Type:    StandardError\n>> Message: message")
+    error = StandardError.new(error_message)
+    expect($stdout).to receive(:puts).with(expected_message)
     described_class.new.print_error(error)
   end
 
