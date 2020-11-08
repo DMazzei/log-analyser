@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Parser do
+RSpec.describe LogAnalyser::Parser do
   let(:file) { load_logfile(file_name) }
   let(:file_name) { 'default' }
   let(:file_exists?) { true }

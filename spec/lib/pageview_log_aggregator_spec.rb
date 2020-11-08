@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe PageviewsLogAggregator do
+RSpec.describe LogAnalyser::PageviewsLogAggregator do
   subject(:under_test) { described_class.new(file_name) }
   let(:file) { load_logfile(file_name) }
   let(:file_name) { 'default' }
@@ -43,7 +43,7 @@ RSpec.describe PageviewsLogAggregator do
     let(:file_exists?) { false }
 
     it 'returns error if logfile path is invalid' do
-      expect { under_test.all }.to raise_error Parser::FileNotFoundError
+      expect { under_test.all }.to raise_error LogAnalyser::Parser::FileNotFoundError
     end
   end
 end

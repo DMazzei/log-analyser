@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe UniquePageviews do
+RSpec.describe LogAnalyser::UniquePageviews do
   let(:entries) do
     {
       '/page1' => %w[1.1.1.1 1.1.1.1],
