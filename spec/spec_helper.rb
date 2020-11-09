@@ -2,28 +2,28 @@
 
 ENV['APP_ENV'] = 'test'
 
-require_relative '../config/environment'
 require 'simplecov'
 require 'simplecov-lcov'
 require 'coveralls'
-
-Dir['spec/support/**/*.rb'].each { |path| require File.expand_path(path) }
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
                                                                  SimpleCov::Formatter::HTMLFormatter,
                                                                  SimpleCov::Formatter::LcovFormatter,
                                                                  Coveralls::SimpleCov::Formatter
                                                                ])
-
 SimpleCov::Formatter::LcovFormatter.config do |config|
   config.report_with_single_file = true
   config.lcov_file_name = 'log-analyser.lcov'
 end
-SimpleCov.minimum_coverage 95
+SimpleCov.minimum_coverage(95)
 
 SimpleCov.start do
   enable_coverage :branch
 end
+
+require_relative '../config/environment'
+
+Dir['spec/support/**/*.rb'].each { |path| require File.expand_path(path) }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

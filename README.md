@@ -194,8 +194,19 @@ Use `$ bundle exec rspec` or `$ bundle exec rake spec:all` to run all the tests.
 
     $ bundle exec rake spec:integration
 
-The test coverage is handled by `rspec`, `simplecov` and `coveralls`.
-Status and coverage history can be checked [here](https://coveralls.io/github/DMazzei/log-analyser). 
+The test coverage is handled by `rspec`, `simplecov` and `coveralls`.</br>
+After running the tests, a version of the test coverage report is available locally:
+
+Mac Terminal, from your application's root directory run
+
+    $ open coverage/index.html
+
+in a debian/ubuntu Terminal,
+
+    $ xdg-open coverage/index.html
+
+
+Full status and coverage history can be checked online on [coveralls](https://coveralls.io/github/DMazzei/log-analyser). 
 
 #### Deployment
 
