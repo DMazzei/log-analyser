@@ -1,7 +1,7 @@
 v0.1.3.     completing documentation
 
-v0.1.2b.
+v0.1.2b.    add gem deployment
 
-v0.1.2.
+v0.1.2.     add circleci workflow
 
-v0.1.1.     adding gemspec/echoe/
+v0.1.1.     add gemspec
